@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Countdown</title>
+    <title>Christmas and New Year Countdown</title>
     <style>
         body {
             margin: 0;
@@ -28,7 +28,7 @@
         }
         p {
             font-size: large;
-             margin: 10px 0 0 0;
+            margin: 10px 0 0 0;
         }
     </style>
 </head>
@@ -36,22 +36,39 @@
 
     <div class="countdown">
         <h1 id="countdownText"></h1>
-        <p>Before Christmas</p>
+        <p id="countdownSubtext"></p>
     </div>
 
     <script>
         function updateCountdown() {
-            const christmasDate = new Date('2024-12-25T00:00:00');
             const now = new Date();
-            const diffTime = christmasDate - now;
-            const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const christmasDate = new Date(`${now.getFullYear()}-12-25T00:00:00`);
+            const newYearDate = new Date(`${now.getFullYear() + 1}-01-01T00:00:00`);
 
             const countdownText = document.getElementById('countdownText');
-            countdownText.textContent = `${daysLeft} DAYS`;
+            const countdownSubtext = document.getElementById('countdownSubtext');
+
+            if (now.toDateString() === christmasDate.toDateString()) {
+                countdownText.textContent = 'Merry Christmas, Lista!';
+                countdownSubtext.textContent = '';
+            } else if (now.toDateString() === newYearDate.toDateString()) {
+                countdownText.textContent = 'Happy New Year, Lista!';
+                countdownSubtext.textContent = '';
+            } else if (now >= christmasDate && now < newYearDate) {
+                const diffTime = newYearDate - now;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                countdownText.textContent = `${daysLeft} DAYS`;
+                countdownSubtext.textContent = 'Before New Year';
+            } else {
+                const diffTime = christmasDate - now;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                countdownText.textContent = `${daysLeft} DAYS`;
+                countdownSubtext.textContent = 'Before Christmas';
+            }
         }
 
         updateCountdown();
-        setInterval(updateCountdown, 86400000); // Update every 24 hours
+        setInterval(updateCountdown, 1000); // Update every second to ensure precision
     </script>
 
 </body>
